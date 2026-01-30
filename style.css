@@ -1,0 +1,1351 @@
+:root {
+    --text-color: #333333;
+    --bg-color: #ffffff;
+    --accent-gradient: linear-gradient(45deg, rgba(25, 192, 215, 0.9), rgb(87, 240, 208));
+    --font-main: 'Noto Sans JP', 'Inter', sans-serif;
+    --max-width: 1100px;
+    --header-height: 80px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-main);
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.3s ease;
+}
+
+a:hover {
+    opacity: 0.7;
+}
+
+ul {
+    list-style: none;
+}
+
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Background Animations */
+.background-animation-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    /* Place behind everything */
+    pointer-events: none;
+    /* Let clicks pass through */
+    overflow: hidden;
+}
+
+.lottie-wrapper {
+    position: absolute;
+    /* Ensure sizing handles the player correctly */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Force lottie player to take full space of wrapper */
+dotlottie-player {
+    width: 100%;
+    height: 100%;
+}
+
+.top-left {
+    width: 1000px;
+    height: 1000px;
+    top: 0;
+    left: 0;
+    transform: translate(-30%, -40%);
+    /* Adjust based on look */
+}
+
+.bottom-right {
+    width: 1400px;
+    /* Slightly larger as in original */
+    height: 1000px;
+    bottom: 0;
+    right: 0;
+    transform: translate(20%, 20%);
+}
+
+/* Header */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header-container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 70px;
+    /* Increased size */
+}
+
+.logo {
+    z-index: 1001;
+}
+
+/* Main Nav - Full Screen Overlay for ALL devices */
+.main-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    transform: translateY(-100%);
+    /* Slide form top or right? Let's do top fade */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 999;
+}
+
+.main-nav.active {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.main-nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+}
+
+.main-nav a {
+    font-size: 2rem;
+    /* Big menu items */
+    font-weight: 700;
+    color: #333;
+    position: relative;
+    overflow: hidden;
+}
+
+.main-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-gradient);
+    transition: width 0.3s ease;
+}
+
+.main-nav a:hover::after {
+    width: 100%;
+}
+
+.btn-contact {
+    display: inline-block;
+    padding: 16px 40px;
+    background: var(--accent-gradient);
+    color: #fff !important;
+    /* Override generic link color */
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-contact:hover {
+    opacity: 1;
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(25, 192, 215, 0.4);
+}
+
+/* Hamburger - Visible on ALL devices */
+.mobile-menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 40px;
+    height: 24px;
+    /* Expanded height for easier clicking */
+    z-index: 1001;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.mobile-menu-toggle span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: #333;
+    border-radius: 3px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: left;
+}
+
+.mobile-menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(0px, -2px);
+}
+
+.mobile-menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+    transform: scale(0);
+}
+
+.mobile-menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(0px, 2px);
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    min-height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding-top: var(--header-height);
+    background: transparent;
+    overflow: hidden;
+}
+
+/* Hero Section */
+.hero {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-top: var(--header-height);
+    background: transparent;
+    overflow: hidden;
+}
+
+.hero-content {
+    max-width: var(--max-width);
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    z-index: 10;
+    text-align: left;
+    position: relative;
+}
+
+/* Vision Label */
+.hero-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    color: #333;
+    letter-spacing: 0.05em;
+}
+
+.hero-label .dot {
+    width: 8px;
+    height: 8px;
+    background-color: #19c0d7;
+    border-radius: 50%;
+}
+
+/* Hero Title */
+.hero-title {
+    font-size: 3rem;
+    /* Reduced size as requested */
+    font-weight: 800;
+    /* Robust but not super heavy */
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    margin-bottom: 24px;
+    color: #000;
+}
+
+/* Hero Subtitle */
+.hero-subtitle {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #888;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.05em;
+}
+
+/* Background Shapes */
+.hero-bg-shapes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Left Shape (Solid Blue Curve) */
+.hero-shape-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 35vw;
+    height: 40vh;
+    background: #2dbce0;
+    /* Fallback */
+    background: linear-gradient(135deg, #2DBCE0 0%, #19C0D7 100%);
+    border-bottom-right-radius: 100%;
+    transform: translate(-10%, -10%);
+}
+
+/* Right Shapes (The Arc) */
+/* We simulate the arc with two elements or a large border ring */
+.hero-shape-right-top {
+    position: absolute;
+    top: -10vh;
+    right: 5vw;
+    width: 50vw;
+    height: 50vw;
+    border-radius: 50%;
+    border: 120px solid transparent;
+    border-top-color: #2DBCE0;
+    /* Gradient simulation via colors */
+    border-right-color: #57F0D0;
+    transform: rotate(45deg);
+    opacity: 0.9;
+}
+
+/* Because CSS borders can't do gradients along the path easily, we use a conic gradient mask or just simpler solid colors if acceptable. 
+   The image shows a gradient arc. 
+   Let's try a simpler approach for the arc: a pseudo element with a gradient background and a mask.
+*/
+
+.hero-shape-right-top {
+    /* Reset from border approach to gradients */
+    border: none;
+    top: 5%;
+    right: -5%;
+    width: 45vw;
+    height: 45vw;
+    border-radius: 50%;
+
+    /* Create the ring effect */
+    background: conic-gradient(from 45deg, #19c0d7, #57F0D0, transparent 60%);
+
+    /* Cut out the middle */
+    -webkit-mask: radial-gradient(transparent 60%, black 61%);
+    mask: radial-gradient(transparent 60%, black 61%);
+
+    transform: rotate(0deg);
+}
+
+.hero-shape-right-bottom {
+    position: absolute;
+    bottom: -15vh;
+    right: 15vw;
+    width: 40vw;
+    height: 40vw;
+    border-radius: 50%;
+    background: #2dcbe2;
+    -webkit-mask: radial-gradient(transparent 60%, black 61%);
+    mask: radial-gradient(transparent 60%, black 61%);
+    opacity: 0.8;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hero-content {
+        text-align: left;
+        padding-left: 30px;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-shape-left {
+        width: 60vw;
+        height: 30vh;
+    }
+
+    .hero-shape-right-top {
+        width: 80vw;
+        height: 80vw;
+        top: 10%;
+        right: -30%;
+    }
+}
+
+/* Sections General */
+.section {
+    padding: 120px 0;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+#service,
+#company,
+#news {
+    position: relative;
+    z-index: 1;
+}
+
+.section-heading {
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 80px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.05em;
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.section-heading::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: var(--accent-gradient);
+    margin: 20px auto 0;
+    border-radius: 2px;
+}
+
+.section-intro {
+    text-align: center;
+    margin-bottom: 80px;
+    font-size: 1.2rem;
+    line-height: 2;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #555;
+}
+
+/* Service List */
+.service-list {
+    display: flex;
+    flex-direction: column;
+    gap: 120px;
+}
+
+.service-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 80px;
+}
+
+.service-item.reverse {
+    flex-direction: row-reverse;
+}
+
+.service-image {
+    flex: 1;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.service-image:hover {
+    transform: translateY(-10px);
+}
+
+.service-content {
+    flex: 1;
+}
+
+.service-subtitle {
+    display: inline-block;
+    color: #19c0d7;
+    font-weight: 700;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.service-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 30px;
+    line-height: 1.3;
+    color: #222;
+}
+
+.service-description {
+    color: #666;
+    line-height: 1.9;
+    font-size: 1.05rem;
+}
+
+/* Company Section */
+.company-table {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.company-row {
+    display: flex;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 25px 0;
+}
+
+.company-row dt {
+    width: 30%;
+    font-weight: 700;
+    color: #333;
+}
+
+.company-row dd {
+    width: 70%;
+    color: #555;
+}
+
+/* News Section */
+.news-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.news-item {
+    display: flex;
+    gap: 40px;
+    padding: 30px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.news-item:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.news-date {
+    font-family: 'Inter', sans-serif;
+    color: #888;
+    min-width: 120px;
+    font-weight: 500;
+}
+
+.news-title {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+/* Contact Section */
+.contact-cta {
+    margin-top: 60px;
+}
+
+.btn-primary {
+    display: inline-block;
+    padding: 20px 60px;
+    background: var(--accent-gradient);
+    color: #fff;
+    border-radius: 60px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    letter-spacing: 0.05em;
+}
+
+.btn-primary:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(25, 192, 215, 0.4);
+}
+
+/* Footer */
+.site-footer {
+    padding: 60px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 0.9rem;
+    color: #888;
+    background: #fafafa;
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.footer-logo img {
+    height: 50px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.footer-logo img:hover {
+    opacity: 1;
+}
+
+.footer-bottom {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    /* Optional separator */
+    padding-top: 20px;
+}
+
+/* Responsive */
+
+/* Achievements Page Styles */
+.page-header {
+    padding: 150px 0 80px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    text-align: center;
+}
+
+.page-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.page-subtitle {
+    font-family: 'Inter', sans-serif;
+    color: #888;
+    letter-spacing: 0.1em;
+    font-size: 1.1rem;
+}
+
+.achievements-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.achievement-card {
+    background: #fff;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    /* Stronger shadow */
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    position: relative;
+    /* Make the whole card clickable implies an anchor tag wrapper, or we just style the article */
+    cursor: pointer;
+}
+
+.achievement-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 60px rgba(25, 192, 215, 0.15);
+    /* Tint of connection/logo color */
+}
+
+/* Ensure images in cards fill the space */
+.card-image img {
+    width: 100%;
+    height: 480px;
+    /* Much taller image */
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.achievement-card:hover .card-image img {
+    transform: scale(1.03);
+}
+
+.card-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.card-content {
+    padding: 40px;
+}
+
+.card-tags {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.tag {
+    background: #f0f0f0;
+    padding: 4px 12px;
+    border-radius: 4px;
+    color: #555;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.card-tags time {
+    color: #999;
+    font-family: 'Inter', sans-serif;
+}
+
+.card-title {
+    font-size: 1.8rem;
+    /* Larger title */
+    font-weight: 800;
+    margin-bottom: 20px;
+    line-height: 1.4;
+    color: #222;
+}
+
+.card-description {
+    color: #555;
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+/* Link overlay tailored for the card */
+.card-link-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    text-indent: -9999px;
+}
+
+/* --- New Index Styles --- */
+
+/* Service Section (List View) */
+.section-header-left {
+    margin-bottom: 60px;
+    text-align: left;
+    border-left: 6px solid #19c0d7;
+    padding-left: 20px;
+}
+
+.section-label {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #19c0d7;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    font-family: 'Inter', sans-serif;
+}
+
+.section-description {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+/* Yarbo Promo Section */
+.yarbo-promo-section {
+    background: linear-gradient(135deg, #f0fdfd 0%, #e6f7ff 100%);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Add a subtle decorative element */
+.yarbo-promo-section::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(25, 192, 215, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.yarbo-promo-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.yarbo-promo-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 24px;
+    color: #222;
+    line-height: 1.4;
+}
+
+.yarbo-promo-text {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 40px;
+    line-height: 1.8;
+}
+
+.btn-yarbo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 50px;
+    background: #19c0d7;
+    /* Use brand color directly for strong contrast */
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    box-shadow: 0 10px 25px rgba(25, 192, 215, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-yarbo:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(25, 192, 215, 0.5);
+    background: #15a0b3;
+}
+
+.btn-yarbo .arrow {
+    transition: transform 0.3s ease;
+}
+
+.btn-yarbo:hover .arrow {
+    transform: translateX(5px);
+}
+
+.service-list-compact {
+    display: flex;
+    flex-direction: column;
+}
+
+.service-row {
+    display: flex;
+    gap: 40px;
+    padding: 40px 0;
+    border-bottom: 1px solid #eee;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.service-row:first-child {
+    border-top: 1px solid #eee;
+}
+
+.service-row:hover {
+    background-color: rgba(249, 250, 251, 0.5);
+}
+
+.service-thumb {
+    width: 240px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.service-thumb img {
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.service-info {
+    flex: 1;
+}
+
+.service-cat {
+    display: inline-block;
+    font-size: 0.8rem;
+    color: #19c0d7;
+    border: 1px solid #19c0d7;
+    padding: 4px 12px;
+    border-radius: 50px;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.service-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.service-desc {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+/* Vision Section */
+.vision-section {
+    background-color: rgba(248, 251, 255, 0.85);
+    /* Very subtle blue tint with transparency */
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.vision-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 60px;
+    line-height: 1.4;
+    text-align: left;
+    max-width: 900px;
+}
+
+.vision-text-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 60px;
+}
+
+.vision-item h3 {
+    font-size: 1.5rem;
+    font-family: 'Inter', sans-serif;
+    color: #19c0d7;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+.vision-item p:nth-of-type(1) {
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    font-family: 'Inter', sans-serif;
+}
+
+.vision-item p:nth-of-type(2) {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+/* News Section (Visual List) */
+.news-list-visual {
+    display: flex;
+    flex-direction: column;
+}
+
+.news-row {
+    display: flex;
+    gap: 30px;
+    padding: 30px 0;
+    border-bottom: 1px solid #eee;
+    align-items: flex-start;
+}
+
+.news-thumb {
+    width: 180px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f0f0f0;
+}
+
+.placeholder-box {
+    width: 100%;
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e9ecef;
+    color: #adb5bd;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.news-info {
+    flex: 1;
+}
+
+.news-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.news-date {
+    color: #999;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+}
+
+.news-tag {
+    background: #ff4757;
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
+.news-headline {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.5;
+    transition: color 0.2s;
+}
+
+.news-row:hover .news-headline {
+    color: #19c0d7;
+}
+
+.news-excerpt {
+    font-size: 0.95rem;
+    color: #777;
+    line-height: 1.6;
+}
+
+.view-all-link {
+    float: right;
+    font-weight: 700;
+    color: #19c0d7;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    margin-top: -35px;
+    /* Pull up to header line */
+}
+
+/* Profile Section */
+.profile-layout {
+    display: flex;
+    gap: 60px;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.profile-image {
+    flex: 1;
+    max-width: 400px;
+}
+
+.placeholder-portrait {
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.profile-text {
+    flex: 1.5;
+}
+
+.profile-role {
+    display: block;
+    color: #19c0d7;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.profile-name {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+.profile-body p {
+    margin-bottom: 20px;
+    line-height: 2;
+    color: #555;
+}
+
+.btn-profile-more {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 30px;
+    border: 2px solid #19c0d7;
+    color: #19c0d7;
+    border-radius: 50px;
+    font-weight: 700;
+    transition: all 0.3s;
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-profile-more:hover {
+    background: #19c0d7;
+    color: #fff;
+}
+
+/* Marquee Contact */
+.marquee-contact {
+    background: #19c0d7;
+    /* Fallback */
+    background: var(--accent-gradient);
+    color: #fff;
+    padding: 20px 0;
+    overflow: hidden;
+    position: relative;
+    white-space: nowrap;
+    margin-top: 100px;
+}
+
+.marquee-track {
+    display: inline-flex;
+    animation: marqueeScroll 20s linear infinite;
+}
+
+.marquee-content {
+    font-size: 4rem;
+    font-weight: 900;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    padding-right: 50px;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+    color: transparent;
+    /* Outline effect */
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.marquee-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+@keyframes marqueeScroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.small-table {
+    border-top: 2px solid #333;
+}
+
+.small-table .company-row {
+    padding: 15px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Enhanced Responsive Styles */
+@media (max-width: 1024px) {
+    .hero-title {
+        font-size: 4rem;
+    }
+
+    .section-heading {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --header-height: 70px;
+        /* Smaller header on mobile */
+    }
+
+    .header-container {
+        padding: 0 20px;
+    }
+
+    .logo img {
+        height: 50px;
+    }
+
+    .hero-title {
+        font-size: 2.8rem;
+        padding: 0 10px;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+        padding: 8px 16px;
+    }
+
+    /* Service Section Mobile */
+    .service-row {
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+    }
+
+    .service-thumb {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .section-description {
+        font-size: 1.2rem;
+    }
+
+    /* Vision Section Mobile */
+    .vision-title {
+        font-size: 2rem;
+        margin-bottom: 40px;
+    }
+
+    .vision-text-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    /* News Section Mobile */
+    .news-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .news-thumb {
+        width: 100%;
+    }
+
+    .view-all-link {
+        float: none;
+        display: block;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    /* Profile Section Mobile */
+    .profile-layout {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .profile-image {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .profile-name {
+        font-size: 2rem;
+    }
+
+    /* Marquee Mobile */
+    .marquee-content {
+        font-size: 2.5rem;
+    }
+
+    /* General Layout */
+    .section {
+        padding: 80px 0;
+    }
+
+    .section-header-left {
+        margin-bottom: 40px;
+    }
+
+    /* Company Table */
+    .company-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .company-row dt {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .company-row dd {
+        width: 100%;
+    }
+
+    /* Achievements Page Mobile */
+    .page-title {
+        font-size: 2.2rem;
+    }
+
+    .achievements-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .btn-primary,
+    .btn-contact {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .vision-title {
+        font-size: 1.8rem;
+    }
+
+    .service-name {
+        font-size: 1.5rem;
+    }
+
+    .logo img {
+        height: 40px;
+    }
+}
